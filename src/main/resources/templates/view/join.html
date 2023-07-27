@@ -3,10 +3,94 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script th:src="@{/js/jquery-3.6.0.js}"></script>
+<script>
+    
+    
+    function submitForm(){
+    	var id = document.getElementById('id').value;
+    	var password = document.getElementById('password').value;
+    	var name = document.getElementById('name').value;
+    	var phone = document.getElementById('phone').value;
+    	
+    	if(id.length < 3||id.length >10){
+    		alert('ID는 3~10자로 입력하세요.');
+    		return false;
+    	}
+    	
+    	if(password.length < 3||password.length >10){
+    		alert('비밀번호는 3~10자로 입력하세요.');
+    		return false;
+    	}
+    	
+        if (name == '') {
+            alert('이름을 입력하세요.');
+            return false;
+        }
+
+        if (phone =='') {
+            alert('전화번호를 입력하세요.');
+            return false;
+        }
+        $.ajax({
+            url: 'join', // 서버가 처리할 URL을 지정해야 합니다.
+            type: 'post',
+            data: { memberid: id, memberpw: password, membername: name, phone: phone },
+            dataType: 'text',
+            success: function(data) {
+                alert('가입이 완료되었습니다!');
+                // 필요에 따라 가입 성공 후 추가적인 처리를 할 수 있습니다.
+            },
+            error: function() {
+                alert('가입에 실패했습니다. 다시 시도해주세요.');
+            }
+        });
+    }
+    
+    
+  </script>
 </head>
 <body>
 <h1>
-회원가입페이지
+[회원가입]
 </h1>
+<form>
+  <table>
+    <tr>
+      <th>ID</th>
+      <td>
+        <input type="text" id="id" name="memberid">
+      </td>
+    </tr>
+    <tr>
+      <th>비밀번호</th>
+      <td>
+        <input type="password" id="password" name="memberpw">
+      </td>
+    </tr>
+   
+    <tr>
+      <th>이름</th>
+      <td>
+        <input type="text" id="name" name="membername">
+      </td>
+    </tr>
+    
+    <tr>
+      <th>전화번호</th>
+      <td>
+        <input type="tel" id="phone" name="phone">
+      </td>
+    </tr>
+    
+    <tr>
+      <td colspan="2" style="text-align: center;">
+        <input type="submit" value="가입" onclick="submitForm()">
+        <input type="submit" value="다시쓰기">
+      </td>
+    </tr>
+  </table>
+  </form>
+
 </body>
 </html>

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.extern.slf4j.Slf4j;
 import net.softsociety.exam.domain.Member;
@@ -19,5 +20,26 @@ import net.softsociety.exam.service.MemberService;
 @Controller
 public class MemberController {
 	
-
+	@Autowired
+	MemberService service;
+	
+	@GetMapping("join")
+	public String join() {
+		
+		return "view/join";
+	} 
+	
+	@ResponseBody
+	@PostMapping("join")
+	public String join(Member member) {
+		int n = service.join(member);
+		log.debug("회원:{}",member);
+		return "redirect:/";
+	}
+	
+	//로그인 폼으로 이동
+	@GetMapping("login")
+	public String loginForm() {
+		return "loginForm";
+	}
 }

@@ -27,6 +27,7 @@ public class WebSecurityConfig {
         .antMatchers(
         		"/",
                 "/image/**",
+                "/member/join",
                 "/css/**",
                 "/js/**").permitAll()
         .anyRequest().authenticated()

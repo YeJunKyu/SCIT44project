@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>판매정보</title>
+    <link rel="stylesheet" th:href="@{/css/listboard2.css}">
+    <script>
+    function deleteBoard(boardnum){
+		alert(boardnum)
+		if(confirm('삭제하시겠습니까?')){
+			document.getElementById('boardnum').value = boardnum;
+			document.getElementById('deleteForm').submit();
+	}
+
+    }
+    
+    function buyBoard(boardnum){
+		alert(boardnum)
+		if(confirm('구매하시겠습니까?')){
+			document.getElementById('boardnum').value = boardnum;
+			document.getElementById('buyForm').submit();
+	}
+
+    }
+	
+    function deleteReply(reply){
+		alert(reply)
+		if(confirm('삭제하시겠습니까?')){
+			document.getElementById('num2').value = reply;
+			document.getElementById('deleteReplyForm').submit();
+	}
+
+    }
+
+</script>
+</head>
+<body>
+    <header>
+
+    </header>
+<!--   삭제 폼   -->
+<form th:action="@{/board/deletePost}" method="post" id="deleteForm">
+	<input type="hidden" name="boardnum" value="0" id="boardnum">
+</form>
+
+<!-- 구매 폼 -->
+<form th:action="@{/board/buyPost}" method="post" id="buyForm">
+	<input type="hidden" name="boardnum" id="boardnum">
+</form>
+
+<form th:action="@{deleteReplyPost}" method="post" id="deleteReplyForm">
+	<input type="hidden" name="reply" value="0" id="num2">
+	<input type="hidden" name="boardnum" th:value="${list.boardnum}" id="num3">
+</form>
+
+
+    <section>
+        <h1>[ 판매정보 ]</h1>
+        
+            <table>
+               
+            </table>
+            <table class="t_main">
+                
+                	<tr style="width: 15%;">
+                		<td class="table_head">작성자</td>
+                		<td th:text="${list.memberid}" class="tdcontents"></td>
+                	</tr>
+                	<tr style="width: 15%;">
+                		<td class="table_head">작성일</td>
+                		<td th:text="${list.inputdate}" class="tdcontents"></td>
+                	</tr>
+                	
+                    <tr style="width: 15%;">
+                    	<td class="table_head">제목</td>
+                    	<td th:text="${list.title}" class="tdcontents">
+                    	</td>
+                    </tr>
+					<tr style="width: 15%;">
+						<td class="table_head">내용</td>
+						<td class="tdcontents">
+						<pre th:text="${list.contents}" style="white-space: pre-wrap; word-wrap: break-word;"></pre>
+						</td>
+					</tr>
+					<tr style="width: 15%;">
+						<td class="title">
+						<a th:if="${#authentication.name} == ${list.memberid} " th:href="|javascript:deleteBoard(${list.boardnum})|" >삭제</a> 
+                    	<a th:if="${#authentication.name} != ${list.memberid} " th:href="|javascript:buyBoard(${list.boardnum})|">구매하기</a>
+                    	</td>
+					</tr>   
+					
+			   		
+            </table>
+           <br>
+           
+           
+<!--         리플 작성 폼 -->
+<!-- 작성할 글내용, 글번호를 서버로 전송 -->
+
+    </section>
+    <footer>
+
+    </footer>
+</body>
+</html>

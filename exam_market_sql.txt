@@ -3,20 +3,36 @@
 
 -- 회원정보 테이블
 create table market_member (
-
+	memberid varchar2(20) primary key,
+	memberpw varchar2(100) not null,
+	membername varchar2(20) not null,
+	phone varchar2(20) not null,
+	enabled number(1) default 1 check (enabled in (0, 1)),
+	rolename varchar2(20) default 'ROLE_USER'
 );
 
 -- 판매글 테이블
 create table market_board (
-
+	boardnum number primary key,
+	memberid varchar2(20) not null,
+	title varchar2(200) not null,
+	contents varchar2(2000) not null,
+	inputdate date default sysdate,
+	category varchar2(50) check (category in('computer','camera','car')),
+	soldout char(1) default 'N' check (soldout in('N','Y')),
+	buyerid varchar2(20)
 );
 
 --판매글 일련번호 시퀀스
-
+create sequence market_board_seq;
 -- 리플 테이블
 create table market_reply (
-
+	replynum number primary key,
+	boardnum number references market_board(boardnum),
+	memberid varchar2(20) not null,
+	replytext varchar2(500),
+	inputdate date default sysdate
 );
 
 --리플 일련번호 시퀀스
-
+create sequence market_reply_seq;

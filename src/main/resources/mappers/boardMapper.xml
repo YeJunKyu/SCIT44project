@@ -5,10 +5,111 @@
 <mapper namespace="net.softsociety.exam.dao.BoardDAO">
 
 <!--판매글 저장 -->
-<insert id="insertBoard" parameterType="Board">
-
+<insert id="write" parameterType="Board">
+		insert 
+		into
+		 market_board
+		 (boardnum,
+		  memberid,
+		  title,
+		  contents,
+		  category
+		  
+		 )
+		  values
+		 (market_board_seq.nextval,
+		  #{memberid},
+		  #{title},
+		  #{contents},
+		  #{category}
+		  
+		  )
 </insert>
 
+<!-- 	판매정보목록 -->
+	<select id="selectAll" parameterType = "Board"
+	resultType="Board">
+	select boardnum,
+	title,
+	memberid
+	 from market_board 
+	 where soldout = 'N'
+	order by boardnum desc
+	</select>
+	
+<!-- 	판매정보검색 -->
+	<select id="selectSearch" parameterType="String"
+	resultType="Board">
+	select boardnum,
+	category,
+	title
+	 from market_board 
+	 where soldout = 'N'
+	 <if test="type != 'all'">
+	  and category = #{category}
+	 </if>
+	
+	 
+	order by boardnum desc
+	</select>
+	
+<!-- 	카테고리검색 -->
+	<select id="selectAllB" resultType="Board">
+	select boardnum,
+	category,
+	title
+	 from market_board 
+	  where soldout = 'N'
+	 order by boardnum desc
+	 
+	</select>
+	
+<!-- 	입력검색 -->
+<select id="selectSearchB" parameterType="hashmap"
+	resultType="Board">
+	select boardnum,
+	category,
+	title
+	 from market_board 
+	 where soldout = 'N'
+	 and upper(title) like upper('%'||#{searchWord}||'%')
+	 <if test="category == 'all'">
+	 and category in('computer','camera','car')
+	 </if>
+	 
+	 <if test="category != 'all'">
+	  and category = #{category}
+	  	
+	 </if>
+	 
+	
+	 
+	order by boardnum desc
+	</select>
+	
+<!-- 	해당링크 글보여주기 -->
+	<select id="selectOne"
+	resultType="Board"
+	parameterType="int">
+	select * from
+	market_board
+	where boardnum = #{boardnum}
+	
+	</select>
+	
+<!-- 	구매 -->
+	<update id="buy" parameterType = "Board">
+    update market_board SET soldout = 'Y'
+    ,buyerid = #{memberid}
+     WHERE boardnum = #{boardnum}
+	</update>
 
+
+<!-- 	글 삭제 -->
+	<delete id="delete" parameterType="Board">
+		delete from market_board 
+		where boardnum = #{boardnum}
+		and memberid = #{memberid}
+	</delete>
 
 </mapper>
